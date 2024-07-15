@@ -1,8 +1,9 @@
 const express = require('express');
 const {info_controller} = require('../../controllers');
+const busRoutes = require('./bus'); 
 
 const router = express.Router();
 
-router.get('/info',info_controller.info);
+router.use('/bus',busRoutes);
 
 module.exports = router;
