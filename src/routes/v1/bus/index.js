@@ -3,8 +3,12 @@ const router = express.Router();
 const {busCRUDmiddleware} = require('../../../middlewares');
 const {busCRUDController} = require('../../../controllers');
 
-router.post('/1',busCRUDmiddleware.busCreateValidate,busCRUDController.busCreateController);
+router.post('/',busCRUDmiddleware.busCreateValidate,busCRUDController.busCreateController);
 
-router.get('/2',busCRUDmiddleware.busReadValidate,busCRUDController.busReadController);
+router.get('/',busCRUDController.busReadAllController);
+
+router.get('/:id',busCRUDController.busReadController);
+
+router.delete('/:id',busCRUDController.busDeleteController);
 
 module.exports = router;

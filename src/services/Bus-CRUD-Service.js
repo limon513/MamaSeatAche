@@ -21,20 +21,38 @@ async function busCreateService(data){
 
 async function busReadService(data){
     try {
-        const response = await CRUDobj.read(data);
-        console.log(response);
-        return response;
+        return await CRUDobj.read(data);
     } catch (error) {
-        let explains = [];
-        error.errors.forEach((err)=>{
-            explains.push(err.message);
-        });
-        throw new AppError(explains,StatusCodes.INTERNAL_SERVER_ERROR);
+        if(error.statusCode == StatusCodes.NOT_FOUND){
+            throw new AppError(error.message,error.statusCode);
+        }
+        throw new AppError(["Could not connect to the server!"],StatusCodes.INTERNAL_SERVER_ERROR);
+    }
+}
+
+async function busReadAllService(){
+    try {
+        return await CRUDobj.readAll();
+    } catch (error) {
+        throw new AppError(["Could not connect to the server!"],StatusCodes.INTERNAL_SERVER_ERROR);
+    }
+}
+
+async function busDeleteService(data){
+    try {
+        return await CRUDobj.delete(data);
+    } catch (error) {
+        if(error.statusCode == StatusCodes.NOT_FOUND){
+            throw new AppError(error.message,error.statusCode);
+        }
+        throw new AppError(["Could not connect to the server!"],StatusCodes.INTERNAL_SERVER_ERROR);
     }
 }
 
 module.exports = {
     busCreateService,
     busReadService,
+    busReadAllService,
+    busDeleteService,
 
 }
