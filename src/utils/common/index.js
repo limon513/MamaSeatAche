@@ -3,4 +3,5 @@ module.exports = {
     errorResponse:require('./error-response'),
     successResponse:require('./success-response'),
     isEmptyObject:require('./checkEmptyObj'),
+    cityList:require('./citySeedAutomate'),
 }
