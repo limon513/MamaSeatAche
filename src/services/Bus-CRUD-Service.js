@@ -49,10 +49,29 @@ async function busDeleteService(data){
     }
 }
 
+async function busUpdateService(data,id){
+    try {
+        return await CRUDobj.update(data,id);
+    } catch (error) {
+        if(error.statusCode == StatusCodes.NOT_FOUND){
+            throw new AppError(["Nothing Found on request Id!"],StatusCodes.NOT_FOUND);
+        }
+        else if(error.name = "SequelizeValidationError"){
+            let explains = [];
+            error.errors.forEach((err)=>{
+                explains.push(err.message);
+            });
+            throw new AppError(explains,StatusCodes.BAD_REQUEST);
+        }
+        throw new AppError(["Could not connect to the server!"],StatusCodes.INTERNAL_SERVER_ERROR);
+    }
+}
+
 module.exports = {
     busCreateService,
     busReadService,
     busReadAllService,
     busDeleteService,
+    busUpdateService,
 
 }

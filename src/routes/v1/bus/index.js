@@ -11,4 +11,6 @@ router.get('/:id',busCRUDController.busReadController);
 
 router.delete('/:id',busCRUDController.busDeleteController);
 
+router.patch('/:id',busCRUDmiddleware.busUpdateMiddleware,busCRUDController.busUpdateController);
+
 module.exports = router;

@@ -1,4 +1,4 @@
-const {busNamePlateValidate,errorResponse} = require('../utils/common');
+const {busNamePlateValidate,errorResponse,isEmptyObject} = require('../utils/common');
 const {StatusCodes} = require('http-status-codes');
 const AppError = require('../utils/errors/App-Error');
 
@@ -16,22 +16,30 @@ function busCreateValidate(req,res,next){
     }
 }
 
-function busReadValidate(req,res,next){
-    if(!req.body){
-        const explains = ["empty field!"];
-        errorResponse.error = explains;
+function busUpdateMiddleware(req,res,next){
+    if(isEmptyObject(req.body)){
+        const explains = ["empty fields!"];
+        errorResponse.error = {explains:explains,statuscode:StatusCodes.BAD_REQUEST};
         return res.status(StatusCodes.BAD_REQUEST).json(errorResponse);
     }
     else{
         if(req.body.busnameplate){
-            req.body.busnameplate = busNamePlateValidate(req.body.busnameplate);
+            if(busNamePlateValidate(req.body.busnameplate)){
+                req.body.busnameplate = busNamePlateValidate(req.body.busnameplate);
+            }
+            else{
+                const explains = ["nameplate formate not valid"];
+                errorResponse.error = {explains:explains,statuscode:StatusCodes.BAD_REQUEST};
+                return res.status(StatusCodes.BAD_REQUEST).json(errorResponse);
+            }
         }
         next();
     }
 }
 
+
+
 module.exports = {
     busCreateValidate,
-    busReadValidate,
-    
+    busUpdateMiddleware,
 }

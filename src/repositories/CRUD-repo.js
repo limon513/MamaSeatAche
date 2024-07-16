@@ -28,8 +28,20 @@ class CRUD{
         return await this.model.findAll();
     }
 
-    async update(){
-        
+    /**
+     * api/v1/bus/ -> with patch request
+     */
+
+    async update(data,id){
+        const response = await this.model.update(
+            //this data object defines changes.
+            data,
+            {where:{id:id}},
+        );
+        if(!response[0]){
+            throw new AppError(["could not process the update request!"],StatusCodes.NOT_FOUND);
+        }
+        return response;
     }
     /**
      * api/v1/bus/ -> with delete request

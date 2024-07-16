@@ -48,10 +48,21 @@ async function busDeleteController(req,res){
     }
 }
 
+async function busUpdateController(req,res){
+    try {
+        const response = await BusCRUDService.busUpdateService(req.body,req.params.id);
+        successResponse.data = response;
+        return res.status(StatusCodes.OK).json(successResponse);
+    } catch (error) {
+        errorResponse.error = {explains:error.message,statuscode:error.statusCode};
+        return res.status(error.statusCode).json(errorResponse);
+    }
+}
+
 module.exports = {
     busCreateController,
     busReadController,
     busReadAllController,
     busDeleteController,
-
+    busUpdateController,
 }
