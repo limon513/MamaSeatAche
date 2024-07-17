@@ -8,7 +8,7 @@ app.use(express.urlencoded({extended:true}));
 
 app.use('/api',apiRoutes);
 
-app.listen(server_config.PORT, async ()=>{
+app.listen(server_config.PORT, ()=>{
     console.log(`Server Started at ${server_config.PORT}`);
     Logger.log({
         level:'info',
